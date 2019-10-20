@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            padding: 10px;
+        }
+
+        #headerdiv {
+            border: solid;
+            background-color: cornflowerblue;
+        }
+
+        #contentdiv {
+            margin: 5px;
+            border: solid;
+            position: relative;
+            background-color: antiquewhite;
+            height: 250px;
+            width: 1206px;
+        }
+
+        #formdiv {
+            background-color: darkgray;
+            border: solid;
+            width: 40%; /*依照父塊的寬度計算*/
+            float: left;
+            position: absolute;
+            top: 5%;
+            left: 25%;
+            width: 24%;
+            height: 90%;
+        }
+
+        #showdiv {
+            background-color: gold;
+            border: solid;
+            float: right;
+            position: absolute;
+            top: 5%;
+            right: 25%;
+            width: 24%;
+            height: 90%;
+        }
+
+        #footerdiv {
+            clear: both; /*不受float影響*/
+            background-color: orange;
+            border: solid;
+        }
+    </style>
+    <Script>
+        function calculater() {
+            
+            var myform = document.forms["tran_form"];
+            var times = parseInt(myform.times.value);
+            var a1b1 = parseFloat(myform.a1b1.value);
+            var a1b2 = parseFloat(myform.a1b2.value);
+            var a2b1 = parseFloat(myform.a2b1.value);
+            var a2b2 = parseFloat(myform.a2b2.value);
+            if (!(a1b1 + a2b1 == 1 && a1b2 + a2b2 == 1)) {
+                alert("error");
+            } else {
+                for (i = 0; i <= times;i++) {
+                    var t_a11 = a1b1;
+                    var t_a12 = a1b2;
+                    var t_a21 = a2b1;
+                    var t_a22 = a2b2;
+
+                    a1b1 = (t_a11 * t_a11 + t_a12 * t_a21);
+                    a1b2 = (t_a11 * t_a12 + t_a12 * t_a22);
+                    a2b1 = (t_a21 * t_a11 + t_a22 * t_a21);
+                    a2b2 = (t_a21 * t_a12 + t_a22 * t_a22);
+                    if (t_a11 == a1b1 && t_a12 == a1b2 && t_a21 == a2b1 && t_a22 == a2b2) {
+                        show("恆定函數為:<br />" + "a11:" + a1b1 + "<br />" + "a12:" + a1b2 + "<br />" + "a21:" + a2b1 + "<br />" + "a22:" + a2b2 + "<br />" + "共執行" + i + "次");
+                        break;
+                    }
+                    show("恆定函數為:<br />" + "a11:" + a1b1 + "<br />" + "a12:" + a1b2 + "<br />" + "a21:" + a2b1 + "<br />" + "a22:" + a2b2 + "<br />" + "共執行" + i + "次");
+                }
+            }
+ 
+            
+        }
+
+        function show(showstring){
+            var outcome = document.getElementById("outcome");
+            outcome.innerHTML = "<p>"+showstring+"</p>";
+        }
+    </Script>
+</head>
+
+<body>
+    <div id="headerdiv">Head</div>
+    <div id="contentdiv" alt="content">
+        <div id="formdiv" alt="okok">
+            <form name="tran_form">
+                <label>B1</label>
+                <label>B2</label>
+                <br />
+                <lable>A1</lable>
+                <input type="text" name="a1b1" size="10" />
+                <input type="text" name="a1b2" size="10" />
+                <br />
+                <label>A2</label>
+                <input type="text" name="a2b1" size="10" />
+                <input type="text" name="a2b2" size="10" />
+                <br />
+                <lable >計算最多</lable ><input type="text" name="times" id="times_id" value="10000"/><lable>次</lable>
+                <input type="button" value="計算" onclick="calculater()"/>
+                
+                <p>*B1+B2需等於1</p>
+
+            </form>
+        </div>
+        <div id="showdiv">
+            <p>showdiv</p>
+            <p id="outcome"></p>
+        </div>
+
+    </div>
+    
+    <div id="footerdiv">footerdiv</div>
+    
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>stamp_web</title>
+    <style>
+        .icon {
+            width: 50px;
+            height: 50px;
+            z-index: 1;
+        }
+
+        div {
+            border: double;
+            position: relative;
+        }
+
+        #divdraw {
+            height: 800px;
+        }
+
+        #divhead {
+            z-index: 2;
+            background-color: slategrey;
+        }
+
+        #form1 {
+            z-index: 2;
+        }
+    </style>
+    <script language="JavaScript1.2">
+        var num = 0;
+        var allx;
+        var ally;
+// Detect if the browser is IE or not.
+// If it is not IE, we assume that the browser is NS.
+        var IE = document.all ? true : false
+// If NS -- that is, !IE -- then set up for mouse capture
+        if (!IE) document.captureEvents(Event.MOUSEMOVE)
+// Set-up to use getMouseXY function onMouseMove
+        document.onmousemove = getMouseXY;
+
+        function imgchange() {
+            var srcstring;
+            var selectvalue = document.getElementById("imgselect");
+            if (selectvalue.value == "f1")
+                srcstring = "../pics/sunflower.png";
+            else if (selectvalue.value == "f2")
+                srcstring = "../pics/cherry-blossom.png";
+            return srcstring;
+        }
+        function imhere() {
+            var odivdraw = document.getElementById("divdraw");
+            var newnode = document.createElement("img");
+            odivdraw.appendChild(newnode);
+            var chinode = odivdraw.childNodes[num];
+            chinode.setAttribute("style", "position:absolute");
+            chinode.setAttribute("src", imgchange());
+            chinode.className = "icon";
+            chinode.style.left = allx - 25 - 9 + "px";
+            chinode.style.top = ally - 25 - 74  + "px";
+            num++;
+        }
+// Temporary variables to hold mouse x-y pos.s
+        var tempX = 0
+        var tempY = 0
+// Main function to retrieve mouse x-y pos.s
+// Main function to retrieve mouse x-y pos.s
+        function getMouseXY(e) {
+            if (IE) { // grab the x-y pos.s if browser is IE
+                tempX = event.clientX + document.body.scrollLeft
+                tempY = event.clientY + document.body.scrollTop
+            } else {  // grab the x-y pos.s if browser is NS
+                tempX = e.pageX
+                tempY = e.pageY
+            }
+  // catch possible negative values in NS4
+            if (tempX < 0){tempX = 0}
+            if (tempY < 0){tempY = 0}
+  // show the position values in the form named Show
+  // in the text fields named MouseX and MouseY
+            document.Show.MouseX.value = tempX
+            document.Show.MouseY.value = tempY
+            allx = tempX;
+            ally = tempY;
+            gomove(tempX, tempY)
+            return true
+        }
+        function gomove(x,y) {
+            var moveimg = document.getElementById("moveimg");
+            moveimg.setAttribute("src", imgchange());
+            moveimg.className = "icon";
+            moveimg.style.left = x - 25 + "px";
+            moveimg.style.top = y - 25 + "px";
+        }
+    </script>
+</head>
+<body>
+    <div id="divhead">
+        <form name="Show" id="form1">
+            <p align="center">
+                <input type="text" name="MouseX" value="0" size="4">X <input type="text" name="MouseY" value="0" size="4">Y
+                <select id="imgselect" onchange="imgchange()">
+                    <option value="f1">sunflower</option>
+                    <option value="f2">cherryflower</option>
+                </select>
+        </form>
+    </div>
+    <div id="divdraw" onclick="imhere()" onmouseover="gomove()"></div>
+    <img id="moveimg" style="position:absolute" onclick="imhere()" />
+
+</body>
+</html>
